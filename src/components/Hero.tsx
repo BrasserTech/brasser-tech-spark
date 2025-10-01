@@ -84,17 +84,16 @@ const Hero = () => {
         >
           <Button
             size="lg"
-            className="group bg-primary hover:bg-primary/90 text-primary-foreground glow-primary"
+            className="bg-primary hover:bg-primary/90 text-background font-semibold"
           >
-            Conheça nossas soluções
-            <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+            Fale com um Especialista
           </Button>
           <Button
             size="lg"
             variant="outline"
-            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+            className="border-primary bg-transparent text-primary hover:bg-primary/10"
           >
-            Fale com um especialista
+            Fale com um Agente de IA
           </Button>
         </motion.div>
 

@@ -9,6 +9,7 @@ const Services = () => {
       title: "IA no Atendimento",
       description:
         "Chatbots inteligentes e assistentes virtuais que melhoram a experiência do cliente e reduzem custos operacionais.",
+      benefit: "Reduza custos e melhore a experiência do seu cliente com atendimento inteligente 24/7.",
       gradient: "from-primary to-secondary",
     },
     {
@@ -16,6 +17,7 @@ const Services = () => {
       title: "Automação 100% Personalizada",
       description:
         "Automatize processos repetitivos e foque no que realmente importa. Soluções sob medida para o seu negócio.",
+      benefit: "Otimize seu fluxo de trabalho e foque no que realmente importa com soluções feitas sob medida.",
       gradient: "from-secondary to-accent",
     },
     {
@@ -23,6 +25,7 @@ const Services = () => {
       title: "Sistemas Web Inteligentes",
       description:
         "Plataformas web modernas, escaláveis e otimizadas. Do conceito ao deploy, cuidamos de tudo.",
+      benefit: "Gerencie e visualize seus dados de forma eficiente com plataformas e dashboards escaláveis.",
       gradient: "from-accent to-primary",
     },
     {
@@ -30,6 +33,7 @@ const Services = () => {
       title: "Integrações com ERPs e APIs",
       description:
         "Conecte seus sistemas e centralize suas operações. Integrações seguras e eficientes.",
+      benefit: "Conecte suas ferramentas e centralize suas operações, garantindo um fluxo de dados seguro e consistente.",
       gradient: "from-primary via-secondary to-accent",
     },
   ];
@@ -76,8 +80,12 @@ const Services = () => {
                     {service.title}
                   </h3>
 
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed mb-3">
                     {service.description}
+                  </p>
+
+                  <p className="text-sm text-primary/80 leading-relaxed font-medium">
+                    {service.benefit}
                   </p>
                 </div>
 
