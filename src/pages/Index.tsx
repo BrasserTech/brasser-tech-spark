@@ -12,11 +12,22 @@ const Index = () => {
     <div className="min-h-screen">
       <Navbar />
       <main>
+        {/* O componente Hero já tem o id="hero" internamente, por isso não precisa de <section> aqui */}
         <Hero />
-        <Services />
-        <Projects />
-        <Testimonials />
-        <Contact />
+
+        {/* Alterado para corresponder aos hrefs do Navbar */}
+        <section id="services">
+          <Services />
+        </section>
+        <section id="projects">
+          <Projects />
+        </section>
+        <section id="testimonials">
+          <Testimonials />
+        </section>
+        <section id="contact">
+          <Contact />
+        </section>
       </main>
       <Footer />
       <WhatsAppButton />
