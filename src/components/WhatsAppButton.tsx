@@ -9,7 +9,7 @@ import {
 
 const WhatsAppButton = () => {
   const handleClick = () => {
-    const phone = "5511999999999"; // Replace with actual WhatsApp number
+    const phone = "5549999206844"; 
     const message = encodeURIComponent(
       "Olá! Gostaria de saber mais sobre os serviços da Brasser Tech."
     );

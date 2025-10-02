@@ -41,21 +41,27 @@ const Contact = () => {
     {
       icon: Mail,
       label: "Email",
-      value: "contato@brassertech.com.br",
-      href: "mailto:contato@brassertech.com.br",
+      value: "brassertech@gmail.com",
+      href: "mailto:brassertech@gmail.com",
     },
     {
       icon: Phone,
       label: "Telefone",
-      value: "+55 (11) 9 9999-9999",
-      href: "tel:+5511999999999",
+      value: "+55 (49) 9 9920-6844",
+      href: "tel:+5549999206844",
     },
     {
       icon: MapPin,
       label: "Endereço",
-      value: "São Paulo, SP - Brasil",
+      value: "Joaçaba, SC - Brasil",
       href: "#",
     },
+  ];
+
+  const socialLinks = [
+    { name: "LinkedIn", url: "https://www.linkedin.com/in/seu-usuario/" },
+    { name: "Instagram", url: "https://www.instagram.com/seu-usuario/" },
+    { name: "GitHub", url: "https://github.com/seu-usuario/" },
   ];
 
   return (
@@ -120,14 +126,19 @@ const Contact = () => {
             <div className="pt-6">
               <p className="text-sm text-muted-foreground mb-4">Siga-nos nas redes sociais</p>
               <div className="flex gap-4">
-                {["LinkedIn", "Instagram", "GitHub"].map((social) => (
+                {socialLinks.map((social) => (
+                  // 2. Use a propriedade "asChild" no Button
                   <Button
-                    key={social}
+                    key={social.name}
                     variant="outline"
                     size="sm"
                     className="hover:border-primary hover:text-primary"
+                    asChild 
                   >
-                    {social}
+                    {/* 3. Coloque o link <a> como filho do Button */}
+                    <a href={social.url} target="_blank" rel="noopener noreferrer">
+                      {social.name}
+                    </a>
                   </Button>
                 ))}
               </div>

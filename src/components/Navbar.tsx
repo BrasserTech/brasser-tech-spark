@@ -17,6 +17,7 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // ALTERAÇÃO: Renomeei os hrefs para baterem com os IDs que definimos
   const menuItems = [
     { label: "Início", href: "#hero" },
     { label: "Serviços", href: "#services" },
@@ -24,6 +25,19 @@ const Navbar = () => {
     { label: "Depoimentos", href: "#testimonials" },
     { label: "Contato", href: "#contact" },
   ];
+
+  // ALTERAÇÃO: Nova função para controlar a rolagem
+  const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, href: string) => {
+    e.preventDefault(); // Impede o comportamento padrão do link
+    const targetId = href.substring(1); // Remove o '#' para pegar o id
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    // Fecha o menu mobile após o clique
+    setIsMobileMenuOpen(false);
+  };
+
 
   return (
     <motion.nav
@@ -50,10 +64,11 @@ const Navbar = () => {
               <motion.a
                 key={item.href}
                 href={item.href}
+                onClick={(e) => handleScrollTo(e, item.href)} // ALTERAÇÃO: Adicionado onClick
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="text-foreground hover:text-primary transition-colors duration-300 font-medium"
+                className="text-foreground hover:text-primary transition-colors duration-300 font-medium cursor-pointer"
               >
                 {item.label}
               </motion.a>
@@ -98,8 +113,8 @@ const Navbar = () => {
                 <a
                   key={item.href}
                   href={item.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block py-2 text-foreground hover:text-primary transition-colors"
+                  onClick={(e) => handleScrollTo(e, item.href)} // ALTERAÇÃO: Adicionado onClick
+                  className="block py-2 text-foreground hover:text-primary transition-colors cursor-pointer"
                 >
                   {item.label}
                 </a>

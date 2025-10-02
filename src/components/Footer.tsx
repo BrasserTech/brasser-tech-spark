@@ -7,8 +7,6 @@ const Footer = () => {
     { name: "Python", icon: "🐍" },
     { name: "PostgreSQL", icon: "🐘" },
     { name: "Docker", icon: "🐳" },
-    { name: "TypeScript", icon: "💙" },
-    { name: "Electron", icon: "⚡" },
     { name: "JavaScript", icon: "🟨" },
   ];
 
