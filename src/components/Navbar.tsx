@@ -23,7 +23,7 @@ const Navbar = () => {
     { label: "Serviços", href: "#services" },
     { label: "Projetos", href: "#projects" },
     { label: "Depoimentos", href: "#testimonials" },
-    { label: "Contato", href: "#contact" },
+    // { label: "Contato", href: "#contact" },
   ];
 
   // ALTERAÇÃO: Nova função para controlar a rolagem
