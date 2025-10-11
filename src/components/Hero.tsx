@@ -82,12 +82,14 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
-          <Button
-            size="lg"
-            className="bg-primary hover:bg-primary/90 text-background font-semibold"
-          >
-            Fale com um Especialista
+        <a href="https://wa.me/5549999206844?text=vim%20pelo%20site"
+          target="_blank" 
+          rel="noopener noreferrer">
+          <Button size="lg" 
+            className="bg-primary hover:bg-primary/90 text-background font-semibold">
+            Falar com um Especialista
           </Button>
+        </a>
           <Button
             size="lg"
             variant="outline"

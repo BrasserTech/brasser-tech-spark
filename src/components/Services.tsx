@@ -21,19 +21,21 @@ const Services = () => {
       gradient: "from-secondary to-accent",
     },
     {
-      icon: Globe,
-      title: "Sistemas Web Inteligentes",
+      icon: Globe, // Pense em talvez usar um ícone de engrenagem (Cog) ou raio (Zap) para automação
+      title: "Sistemas que Automatizam Processos",
       description:
-        "Plataformas web modernas, escaláveis e otimizadas. Do conceito ao deploy, cuidamos de tudo.",
-      benefit: "Gerencie e visualize seus dados de forma eficiente com plataformas e dashboards escaláveis.",
+        "Desenvolvemos sistemas que automatizam tarefas manuais, otimizam o fluxo de trabalho e reduzem custos operacionais.",
+      benefit:
+        "Aumente a produtividade da sua equipe e minimize erros, permitindo que o foco permaneça no crescimento do seu negócio.",
       gradient: "from-accent to-primary",
     },
     {
       icon: Network,
-      title: "Integrações com ERPs e APIs",
+      title: "Integrações e APIs",
       description:
-        "Conecte seus sistemas e centralize suas operações. Integrações seguras e eficientes.",
-      benefit: "Conecte suas ferramentas e centralize suas operações, garantindo um fluxo de dados seguro e consistente.",
+        "Conectamos suas plataformas de e-commerce, gateways de pagamento, ferramentas de marketing, sistemas financeiros e de logística para funcionarem em perfeita harmonia.",
+      benefit:
+        "Centralize suas informações, elimine a duplicidade de dados e tenha uma visão completa da sua operação em tempo real.",
       gradient: "from-primary via-secondary to-accent",
     },
   ];
