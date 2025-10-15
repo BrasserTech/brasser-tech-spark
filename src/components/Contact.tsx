@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import emailjs from '@emailjs/browser'; // 1. Importar o EmailJS
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,7 +24,7 @@ const Contact = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
       toast({
         title: "Campos obrigatórios",
@@ -36,49 +35,38 @@ const Contact = () => {
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-        toast({
-            title: "Email inválido",
-            description: "Por favor, insira um endereço de email válido.",
-            variant: "destructive",
-        });
-        return;
+      toast({
+        title: "Email inválido",
+        description: "Por favor, insira um endereço de email válido.",
+        variant: "destructive",
+      });
+      return;
     }
 
     setIsSending(true);
 
-    const templateParams = {
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      message: formData.message,
-    };
+    try {
+      const phone = "5549999206844"; // seu número de WhatsApp com DDI e DDD
+      const text = `Olá! Sou ${formData.name} (${formData.email}${formData.phone ? ` | ${formData.phone}` : ""}).\n\n${formData.message}`;
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+      window.open(url, "_blank");
 
-    // Usando variáveis de ambiente para segurança
-    const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID as string;
-    const templateID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID as string;
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY as string;
+      toast({
+        title: "Abrindo WhatsApp",
+        description: "Sua mensagem foi preparada. Conclua o envio no aplicativo.",
+      });
 
-    emailjs.send(serviceID, templateID, templateParams, publicKey)
-    .then((response) => {
-        console.log("EMAIL ENVIADO", response.status, response.text);
-        toast({
-          title: "Mensagem enviada com sucesso!",
-          description: "Agradecemos o seu contato. Em breve, nossa equipe entrará em contato.",
-          variant: "default",
-        });
-        setFormData({ name: "", email: "", phone: "", message: "" });
-    })
-    .catch((err) => {
-        console.error("ERRO AO ENVIAR EMAIL:", err);
-        toast({
-            title: "Ocorreu um erro",
-            description: "Não foi possível enviar a mensagem. Verifique suas credenciais e tente novamente.", // Mensagem de erro mais específica
-            variant: "destructive",
-        });
-    })
-    .finally(() => {
-        setIsSending(false);
-    });
+      setFormData({ name: "", email: "", phone: "", message: "" });
+    } catch (err) {
+      console.error("Erro ao abrir WhatsApp:", err);
+      toast({
+        title: "Erro",
+        description: "Não foi possível abrir o WhatsApp. Tente novamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const socialLinks = [
@@ -90,14 +78,14 @@ const Contact = () => {
 
   return (
     <section id="contact" className="py-20 md:py-28 bg-muted/30 relative overflow-hidden">
-      {/* Elementos de fundo abstratos para dinamismo */}
-      <motion.div 
+      {/* Elementos de fundo */}
+      <motion.div
         className="absolute top-0 left-1/4 w-72 h-72 bg-primary/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"
         initial={{ scale: 0.8 }}
         animate={{ scale: [0.8, 1.2, 0.8] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
       />
-      <motion.div 
+      <motion.div
         className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"
         initial={{ scale: 1.2 }}
         animate={{ scale: [1.2, 0.8, 1.2] }}
@@ -121,7 +109,7 @@ const Contact = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-          {/* Social Media & Quick Contact Info */}
+          {/* Coluna esquerda */}
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -137,39 +125,48 @@ const Contact = () => {
             </div>
 
             <div className="flex gap-4 md:gap-6 pt-6 justify-center lg:justify-start flex-wrap">
-                {socialLinks.map((social, index) => (
-                    <motion.div
-                        key={social.name}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.5 }}
-                        transition={{ delay: index * 0.1 + 0.5, duration: 0.4 }}
-                        whileHover={{ scale: 1.15, y: -5 }}
-                        whileTap={{ scale: 0.9 }}
-                    >
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            className="rounded-full w-16 h-16 md:w-20 md:h-20 border-border hover:border-primary hover:text-primary transition-colors duration-300 group shadow-md"
-                            asChild 
-                        >
-                            <a href={social.url} target="_blank" rel="noopener noreferrer" aria-label={`Brasser Tech no ${social.name}`}>
-                                <social.icon className="w-8 h-8 md:w-10 md:h-10" />
-                            </a>
-                        </Button>
-                    </motion.div>
-                ))}
+              {socialLinks.map((social, index) => (
+                <motion.div
+                  key={social.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ delay: index * 0.1 + 0.5, duration: 0.4 }}
+                  whileHover={{ scale: 1.15, y: -5 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="rounded-full w-16 h-16 md:w-20 md:h-20 border-border hover:border-primary hover:text-primary transition-colors duration-300 group shadow-md"
+                    asChild
+                  >
+                    <a href={social.url} target="_blank" rel="noopener noreferrer" aria-label={`Brasser Tech no ${social.name}`}>
+                      <social.icon className="w-8 h-8 md:w-10 md:h-10" />
+                    </a>
+                  </Button>
+                </motion.div>
+              ))}
             </div>
 
             <div className="pt-8 text-center lg:text-left">
-                <h4 className="text-xl font-semibold mb-2 text-foreground">Dúvidas rápidas?</h4>
-                <p className="text-muted-foreground mb-1">Envie um e-mail: <a href="mailto:brassertech2025@gmail.com" className="text-primary hover:underline">brassertech2025@gmail.com</a></p>
-                <p className="text-muted-foreground">Ou ligue: <a href="tel:+5549999206844" className="text-primary hover:underline">+55 (49) 9 9920-6844</a></p>
+              <h4 className="text-xl font-semibold mb-2 text-foreground">Dúvidas rápidas?</h4>
+              <p className="text-muted-foreground mb-1">
+                WhatsApp:{" "}
+                <a
+                  href="https://wa.me/5549999206844"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  +55 (49) 9 9920-6844
+                </a>
+              </p>
+              <p className="text-muted-foreground">E-mail: <a href="mailto:brassertech2025@gmail.com" className="text-primary hover:underline">brassertech2025@gmail.com</a></p>
             </div>
-
           </motion.div>
 
-          {/* Contact Form Section */}
+          {/* Coluna direita - Formulário */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -177,63 +174,69 @@ const Contact = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <Card className="p-8 md:p-10 bg-card border-border shadow-lg rounded-xl">
-              <h3 className="text-2xl font-bold mb-6 text-foreground">Envie Sua Mensagem</h3>
+              <h3 className="text-2xl font-bold mb-6 text-foreground">Envie sua Mensagem</h3>
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Inputs do formulário ... */}
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium mb-2 text-muted-foreground">
                     Nome Completo <span className="text-red-500">*</span>
                   </label>
-                  <Input id="name" name="name" value={formData.name} onChange={handleChange} placeholder="Seu nome" className="bg-background/80 border-border focus:border-primary transition-colors duration-200" />
+                  <Input id="name" name="name" value={formData.name} onChange={handleChange} placeholder="Seu nome" />
                 </div>
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium mb-2 text-muted-foreground">
                     Email <span className="text-red-500">*</span>
                   </label>
-                  <Input id="email" type="email" name="email" value={formData.email} onChange={handleChange} placeholder="seu@email.com" className="bg-background/80 border-border focus:border-primary transition-colors duration-200" />
+                  <Input id="email" type="email" name="email" value={formData.email} onChange={handleChange} placeholder="seu@email.com" />
                 </div>
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium mb-2 text-muted-foreground">
                     Telefone (opcional)
                   </label>
-                  <Input id="phone" type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="(DD) 9 XXXX-XXXX" className="bg-background/80 border-border focus:border-primary transition-colors duration-200" />
+                  <Input id="phone" type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="(DD) 9 XXXX-XXXX" />
                 </div>
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium mb-2 text-muted-foreground">
                     Mensagem <span className="text-red-500">*</span>
                   </label>
-                  <Textarea id="message" name="message" value={formData.message} onChange={handleChange} placeholder="Conte-nos sobre seu projeto, suas ideias ou dúvidas..." rows={6} className="bg-background/80 border-border focus:border-primary transition-colors duration-200 resize-y" />
+                  <Textarea id="message" name="message" value={formData.message} onChange={handleChange} placeholder="Conte-nos sobre seu projeto, suas ideias ou dúvidas..." rows={6} />
                 </div>
 
-                {/* 5. Botão com estado de carregamento */}
-                <motion.div
-                  whileHover={{ scale: 1.01, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                >
+                <motion.div whileHover={{ scale: 1.01, y: -2 }} whileTap={{ scale: 0.98 }}>
                   <Button
                     type="submit"
                     size="lg"
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 flex items-center justify-center transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-[#25D366] hover:bg-[#20BA5A] text-white font-semibold py-3 flex items-center justify-center transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={isSending}
                   >
                     {isSending ? (
                       <span className="flex items-center">
-                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <svg
+                          className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8
- 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
                         </svg>
-                        Enviando...
+                        Abrindo WhatsApp...
                       </span>
                     ) : (
                       <>
                         <Send className="mr-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        Enviar Mensagem
+                        Enviar pelo WhatsApp
                       </>
                     )}
                   </Button>
                 </motion.div>
+
+                <p className="text-xs text-muted-foreground text-center">
+                  Ao clicar em enviar, você será direcionado ao WhatsApp com a mensagem pronta.
+                </p>
               </form>
             </Card>
           </motion.div>
@@ -244,4 +247,3 @@ const Contact = () => {
 };
 
 export default Contact;
-
