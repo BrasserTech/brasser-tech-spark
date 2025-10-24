@@ -31,7 +31,10 @@ const WhatsAppButton = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={handleClick}
-            className="fixed bottom-6 right-6 z-50 bg-[#25D366] hover:bg-[#20BA5A] text-white p-4 rounded-full shadow-lg transition-colors duration-300 group"
+            
+            /* ===== MUDANÇA AQUI ===== */
+            className="fixed bottom-6 left-6 z-50 bg-[#25D366] hover:bg-[#20BA5A] text-white p-4 rounded-full shadow-lg transition-colors duration-300 group"
+            
             aria-label="Converse conosco no WhatsApp"
           >
             {/* O ícone e a animação de flutuação interna */}
@@ -48,7 +51,7 @@ const WhatsAppButton = () => {
             </motion.div>
           </motion.button>
         </TooltipTrigger>
-        <TooltipContent side="left" className="bg-popover text-popover-foreground">
+        <TooltipContent side="right" className="bg-popover text-popover-foreground">
           <p>Podemos ajudar?</p>
         </TooltipContent>
       </Tooltip>

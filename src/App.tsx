@@ -1,32 +1,37 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-// Alteração aqui: troque BrowserRouter por HashRouter
-import { HashRouter, Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "@/components/ThemeProvider";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
+// src/App.tsx - VERSÃO CORRIGIDA
+import React from 'react';
 
-const queryClient = new QueryClient();
+// Importa seu provedor de tema
+import { ThemeProvider } from '@/components/ThemeProvider'; 
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+// Importa sua página principal
+import IndexPage from '@/pages/Index'; 
+
+// Importa os widgets flutuantes
+import WhatsAppButton from '@/components/WhatsAppButton';
+import { AIChatWidget } from '@/components/AIChatWidget';
+
+// Seu CSS global (se tiver, como o index.css)
+// import '@/index.css'; // <-- DEIXE ESTA LINHA REMOVIDA OU COMENTADA!
+                         // O seu 'main.tsx' já importa o 'index.css'.
+                         // Importar duas vezes quebra o layout.
+
+function App() {
+  return (
+    // 'storageKey' FOI REMOVIDO DAQUI.
+    // É isso que estava causando o erro de compilação.
     <ThemeProvider defaultTheme="dark">
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        {/* Alteração aqui: troque BrowserRouter por HashRouter */}
-        <HashRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </HashRouter>
-      </TooltipProvider>
+      
+      {/* 1. O CONTEÚDO DO SEU SITE (que está na página Index) */}
+      <IndexPage />
+
+      {/* 2. OS WIDGETS FLUTUANTES (que ficam por cima) */}
+      <WhatsAppButton />
+      <AIChatWidget />
+
     </ThemeProvider>
-  </QueryClientProvider>
-);
+  );
+}
 
 export default App;
+

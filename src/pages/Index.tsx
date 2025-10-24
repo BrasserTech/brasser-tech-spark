@@ -1,38 +1,36 @@
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import Services from "@/components/Services";
-import Projects from "@/components/Projects";
-import Testimonials from "@/components/Testimonials";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
+// src/pages/Index.tsx - ATUALIZADO
+import React from 'react';
 
-const Index = () => {
+// Importe todas as seções do seu site a partir de /components/
+import Navbar from '@/components/Navbar';
+import Hero from '@/components/Hero';
+import Services from '@/components/Services';
+import Projects from '@/components/Projects';
+import Testimonials from '@/components/Testimonials';
+import Contact from '@/components/Contact';
+import Footer from '@/components/Footer';
+
+const IndexPage = () => {
   return (
-    <div className="min-h-screen">
+    <>
       <Navbar />
-      <main>
-        {/* O componente Hero já tem o id="hero" internamente, por isso não precisa de <section> aqui */}
+      
+      {/* A MUDANÇA ESTÁ AQUI: 
+        Adicione um 'padding-top' (ex: pt-16) no <main> 
+        para "empurrar" o conteúdo para baixo do Navbar fixo.
+        Ajuste 'pt-16' (16 = 4rem = 64px) se a altura do seu Navbar for diferente.
+      */}
+      <main className="pt-16">
         <Hero />
-
-        {/* Alterado para corresponder aos hrefs do Navbar */}
-        <section id="services">
-          <Services />
-        </section>
-        <section id="projects">
-          <Projects />
-        </section>
-        {/* <section id="testimonials">
-          <Testimonials />
-        </section> */}
-        <section id="contact">
-          <Contact />
-        </section>
+        <Services />
+        <Projects />
+        <Testimonials />
+        <Contact />
       </main>
+      
       <Footer />
-      <WhatsAppButton />
-    </div>
+    </>
   );
 };
 
-export default Index;
+export default IndexPage;
