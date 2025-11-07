@@ -79,10 +79,10 @@ const Hero = () => {
           className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 place-items-center"
         >
           {[
-            { value: "500+", label: "Projetos Entregues" },
-            { value: "98%", label: "Satisfação" },
-            { value: "24/7", label: "Suporte" },
-            { value: "15+", label: "Anos de Experiência" },
+            // { value: "500+", label: "Projetos Entregues" },
+            // { value: "98%", label: "Satisfação" },
+            // { value: "24/7", label: "Suporte" },
+            // { value: "15+", label: "Anos de Experiência" },
           ].map((stat, i) => (
             <div key={i} className="flex flex-col items-center">
               <div className="text-4xl font-bold text-primary mb-1">{stat.value}</div>
