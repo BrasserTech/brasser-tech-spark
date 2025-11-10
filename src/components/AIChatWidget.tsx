@@ -7,7 +7,7 @@ type Message = { sender: 'user' | 'bot'; text: string };
 
 export function AIChatWidget() {
   const N8N_WEBHOOK_URL =
-    'https://automacoes.brassertech.com.br/webhook-test/f119c6ea-c592-4dab-817f-07171f61f9c7';
+    'https://automacoes.brassertech.com.br/webhook/f119c6ea-c592-4dab-817f-07171f61f9c7';
 
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
