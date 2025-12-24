@@ -6,8 +6,8 @@ import path from 'path' // <-- 1. Importe o 'path'
 export default defineConfig({
   plugins: [react()],
   
-  // Configurações para deploy com domínio customizado
-  base: '/', 
+  // Configurações para o GitHub Pages
+  base: '/brasser-tech-spark/', 
   build: {
     outDir: 'docs',
   },
