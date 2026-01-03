@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-import { Send, Linkedin, Instagram, Youtube, Video } from "lucide-react";
+import { Send, Linkedin, Instagram, Youtube, Video, MessageCircle, MapPin, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const Contact = () => {
@@ -12,8 +12,7 @@ const Contact = () => {
   const [isSending, setIsSending] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
-    phone: "",
+    phone: "", // Mantive telefone pois é útil para o WhatsApp, mas pode ser opcional
     message: "",
   });
 
@@ -25,19 +24,10 @@ const Contact = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+    if (!formData.name.trim() || !formData.message.trim()) {
       toast({
         title: "Campos obrigatórios",
-        description: "Por favor, preencha seu nome, email e mensagem.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      toast({
-        title: "Email inválido",
-        description: "Por favor, insira um endereço de email válido.",
+        description: "Por favor, preencha seu nome e a mensagem.",
         variant: "destructive",
       });
       return;
@@ -46,25 +36,29 @@ const Contact = () => {
     setIsSending(true);
 
     try {
-      const phone = "5549999206844"; // seu número de WhatsApp com DDI e DDD
-      const text = `Olá! Sou ${formData.name} (${formData.email}${formData.phone ? ` | ${formData.phone}` : ""}).\n\n${formData.message}`;
-      const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
-      window.open(url, "_blank");
+      const whatsappNumber = "5549999206844"; // Seu número configurado
+      
+      // Formatação da mensagem para o WhatsApp
+      const text = `*Nova Mensagem via Site*\n\n*Nome:* ${formData.name}\n${formData.phone ? `*Telefone:* ${formData.phone}\n` : ""}*Mensagem:* ${formData.message}`;
+      
+      const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
+      
+      // Pequeno delay para simular processamento e dar feedback visual
+      setTimeout(() => {
+        window.open(url, "_blank");
+        
+        toast({
+          title: "Redirecionando para WhatsApp",
+          description: "Sua mensagem está pronta para ser enviada.",
+          className: "bg-green-600 text-white border-none"
+        });
 
-      toast({
-        title: "Abrindo WhatsApp",
-        description: "Sua mensagem foi preparada. Conclua o envio no aplicativo.",
-      });
+        setFormData({ name: "", phone: "", message: "" });
+        setIsSending(false);
+      }, 1000);
 
-      setFormData({ name: "", email: "", phone: "", message: "" });
     } catch (err) {
       console.error("Erro ao abrir WhatsApp:", err);
-      toast({
-        title: "Erro",
-        description: "Não foi possível abrir o WhatsApp. Tente novamente.",
-        variant: "destructive",
-      });
-    } finally {
       setIsSending(false);
     }
   };
@@ -77,169 +71,191 @@ const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="py-20 md:py-28 bg-muted/30 relative overflow-hidden">
-      {/* Elementos de fundo */}
-      <motion.div
-        className="absolute top-0 left-1/4 w-72 h-72 bg-primary/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"
-        initial={{ scale: 0.8 }}
-        animate={{ scale: [0.8, 1.2, 0.8] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"
-        initial={{ scale: 1.2 }}
-        animate={{ scale: [1.2, 0.8, 1.2] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-      />
+    <section id="contact" className="py-24 relative overflow-hidden bg-background">
+      {/* Background Animado (Blobs) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          animate={{ 
+            scale: [1, 1.2, 1],
+            x: [0, 50, 0],
+            opacity: [0.3, 0.5, 0.3] 
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-20 -left-20 w-96 h-96 bg-primary/20 rounded-full blur-[100px]"
+        />
+        <motion.div
+          animate={{ 
+            scale: [1, 1.1, 1],
+            x: [0, -30, 0],
+            opacity: [0.2, 0.4, 0.2] 
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute top-1/2 -right-20 w-80 h-80 bg-purple-500/20 rounded-full blur-[100px]"
+        />
+      </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16 md:mb-20"
-        >
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
-            <span className="text-gradient">Transforme</span> Seu Potencial
-          </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            Vamos conversar sobre como a Brasser Tech pode impulsionar o seu próximo grande projeto.
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-          {/* Coluna esquerda */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          
+          {/* Coluna Esquerda: Informações e CTA */}
           <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ staggerChildren: 0.1 }}
-            className="space-y-8 flex flex-col justify-center items-center lg:items-start"
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="space-y-8"
           >
             <div>
-              <h3 className="text-3xl font-bold mb-4 text-foreground text-center lg:text-left">Conecte-se Conosco</h3>
-              <p className="text-muted-foreground text-lg leading-relaxed text-center lg:text-left">
-                Explore nossas soluções, veja nossos projetos e fique por dentro das novidades em tecnologia.
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                </span>
+                Disponível para novos projetos
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
+                Vamos construir algo <br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">
+                  extraordinário juntos?
+                </span>
+              </h2>
+              
+              <p className="text-lg text-muted-foreground leading-relaxed max-w-lg">
+                Tem uma ideia inovadora ou um desafio complexo na sua empresa? 
+                Nossa equipe está pronta para desenhar a solução tecnológica perfeita para o seu negócio.
               </p>
             </div>
 
-            <div className="flex gap-4 md:gap-6 pt-6 justify-center lg:justify-start flex-wrap">
-              {socialLinks.map((social, index) => (
-                <motion.div
-                  key={social.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.5 }}
-                  transition={{ delay: index * 0.1 + 0.5, duration: 0.4 }}
-                  whileHover={{ scale: 1.15, y: -5 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="rounded-full w-16 h-16 md:w-20 md:h-20 border-border hover:border-primary hover:text-primary transition-colors duration-300 group shadow-md"
-                    asChild
+            {/* Cards de Contato Rápido */}
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Card className="p-4 bg-card/50 border-muted hover:border-primary/50 transition-colors flex items-center gap-4">
+                <div className="p-3 rounded-full bg-primary/10 text-primary">
+                  <MessageCircle size={24} />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Fale agora no</p>
+                  <p className="font-semibold">WhatsApp</p>
+                </div>
+              </Card>
+              
+              <Card className="p-4 bg-card/50 border-muted hover:border-primary/50 transition-colors flex items-center gap-4">
+                <div className="p-3 rounded-full bg-primary/10 text-primary">
+                  <MapPin size={24} />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Localização</p>
+                  <p className="font-semibold">Brasil - SC</p>
+                </div>
+              </Card>
+            </div>
+
+            {/* Redes Sociais */}
+            <div>
+              <p className="text-sm font-medium mb-4 text-muted-foreground">Siga nossas redes</p>
+              <div className="flex gap-3">
+                {socialLinks.map((social, index) => (
+                  <motion.a
+                    key={social.name}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ y: -3, scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="p-3 rounded-xl bg-muted hover:bg-primary hover:text-white transition-colors duration-300"
                   >
-                    <a href={social.url} target="_blank" rel="noopener noreferrer" aria-label={`Brasser Tech no ${social.name}`}>
-                      <social.icon className="w-8 h-8 md:w-10 md:h-10" />
-                    </a>
-                  </Button>
-                </motion.div>
-              ))}
-            </div>
-
-            <div className="pt-8 text-center lg:text-left">
-              <h4 className="text-xl font-semibold mb-2 text-foreground">Dúvidas rápidas?</h4>
-              <p className="text-muted-foreground mb-1">
-                WhatsApp:{" "}
-                <a
-                  href="https://wa.me/5549999206844"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline"
-                >
-                  +55 (49) 9 9920-6844
-                </a>
-              </p>
-              <p className="text-muted-foreground">E-mail: <a href="mailto:brassertech2025@gmail.com" className="text-primary hover:underline">brassertech2025@gmail.com</a></p>
+                    <social.icon size={20} />
+                  </motion.a>
+                ))}
+              </div>
             </div>
           </motion.div>
 
-          {/* Coluna direita - Formulário */}
+          {/* Coluna Direita: Formulário */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <Card className="p-8 md:p-10 bg-card border-border shadow-lg rounded-xl">
-              <h3 className="text-2xl font-bold mb-6 text-foreground">Envie sua Mensagem</h3>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2 text-muted-foreground">
-                    Nome Completo <span className="text-red-500">*</span>
-                  </label>
-                  <Input id="name" name="name" value={formData.name} onChange={handleChange} placeholder="Seu nome" />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2 text-muted-foreground">
-                    Email <span className="text-red-500">*</span>
-                  </label>
-                  <Input id="email" type="email" name="email" value={formData.email} onChange={handleChange} placeholder="seu@email.com" />
-                </div>
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium mb-2 text-muted-foreground">
-                    Telefone (opcional)
-                  </label>
-                  <Input id="phone" type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="(DD) 9 XXXX-XXXX" />
-                </div>
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium mb-2 text-muted-foreground">
-                    Mensagem <span className="text-red-500">*</span>
-                  </label>
-                  <Textarea id="message" name="message" value={formData.message} onChange={handleChange} placeholder="Conte-nos sobre seu projeto, suas ideias ou dúvidas..." rows={6} />
+            <Card className="p-8 md:p-10 bg-card/80 backdrop-blur-xl border-primary/10 shadow-2xl shadow-primary/5 rounded-2xl relative overflow-hidden">
+              {/* Borda gradient no topo */}
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-purple-500 to-primary" />
+              
+              <div className="mb-8">
+                <h3 className="text-2xl font-bold mb-2">Envie uma mensagem</h3>
+                <p className="text-muted-foreground">
+                  Preencha os dados abaixo para iniciar uma conversa direta no WhatsApp.
+                </p>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="space-y-2">
+                  <label htmlFor="name" className="text-sm font-medium ml-1">Nome Completo</label>
+                  <Input 
+                    id="name" 
+                    name="name" 
+                    value={formData.name} 
+                    onChange={handleChange} 
+                    placeholder="Como podemos te chamar?" 
+                    className="bg-background/50 border-muted-foreground/20 focus:border-primary h-12"
+                  />
                 </div>
 
-                <motion.div whileHover={{ scale: 1.01, y: -2 }} whileTap={{ scale: 0.98 }}>
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="w-full bg-[#25D366] hover:bg-[#20BA5A] text-white font-semibold py-3 flex items-center justify-center transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={isSending}
-                  >
-                    {isSending ? (
-                      <span className="flex items-center">
-                        <svg
-                          className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                        Abrindo WhatsApp...
-                      </span>
-                    ) : (
-                      <>
-                        <Send className="mr-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        Enviar pelo WhatsApp
-                      </>
-                    )}
-                  </Button>
-                </motion.div>
+                <div className="space-y-2">
+                  <label htmlFor="phone" className="text-sm font-medium ml-1">Telefone / WhatsApp</label>
+                  <Input 
+                    id="phone" 
+                    type="tel" 
+                    name="phone" 
+                    value={formData.phone} 
+                    onChange={handleChange} 
+                    placeholder="(DD) 99999-9999" 
+                    className="bg-background/50 border-muted-foreground/20 focus:border-primary h-12"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <label htmlFor="message" className="text-sm font-medium ml-1">Como podemos ajudar?</label>
+                  <Textarea 
+                    id="message" 
+                    name="message" 
+                    value={formData.message} 
+                    onChange={handleChange} 
+                    placeholder="Conte um pouco sobre o seu projeto..." 
+                    className="bg-background/50 border-muted-foreground/20 focus:border-primary min-h-[120px] resize-none"
+                  />
+                </div>
 
-                <p className="text-xs text-muted-foreground text-center">
-                  Ao clicar em enviar, você será direcionado ao WhatsApp com a mensagem pronta.
+                <Button 
+                  type="submit" 
+                  size="lg"
+                  className="w-full h-14 text-base font-semibold bg-[#25D366] hover:bg-[#128C7E] text-white shadow-lg shadow-green-500/20 transition-all duration-300 group"
+                  disabled={isSending}
+                >
+                  {isSending ? (
+                    <span className="flex items-center gap-2">
+                      <motion.div 
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                      />
+                      Abrindo WhatsApp...
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-2">
+                      Iniciar Conversa <Send size={18} className="group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  )}
+                </Button>
+                
+                <p className="text-xs text-center text-muted-foreground mt-4">
+                  Ao clicar, você será redirecionado para o WhatsApp Web ou App.
                 </p>
               </form>
             </Card>
           </motion.div>
+
         </div>
       </div>
     </section>
