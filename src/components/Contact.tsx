@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-import { Send, Linkedin, Instagram, Youtube, Video, MessageCircle, MapPin, ArrowRight } from "lucide-react";
+import { Send, Linkedin, Instagram, Youtube, Video, MessageCircle, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const Contact = () => {
@@ -12,7 +12,7 @@ const Contact = () => {
   const [isSending, setIsSending] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    phone: "", // Mantive telefone pois é útil para o WhatsApp, mas pode ser opcional
+    phone: "",
     message: "",
   });
 
@@ -38,12 +38,10 @@ const Contact = () => {
     try {
       const whatsappNumber = "5549999206844"; // Seu número configurado
       
-      // Formatação da mensagem para o WhatsApp
       const text = `*Nova Mensagem via Site*\n\n*Nome:* ${formData.name}\n${formData.phone ? `*Telefone:* ${formData.phone}\n` : ""}*Mensagem:* ${formData.message}`;
       
       const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
       
-      // Pequeno delay para simular processamento e dar feedback visual
       setTimeout(() => {
         window.open(url, "_blank");
         
@@ -71,9 +69,19 @@ const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden bg-background">
-      {/* Background Animado (Blobs) */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <section 
+      id="contact" 
+      className="py-24 relative overflow-hidden transition-colors duration-500
+                 /* MODO CLARO: Fundo cinza suave */
+                 bg-slate-50
+                 /* MODO ESCURO: Fundo preto */
+                 dark:bg-black"
+    >
+      
+      {/* =========================================
+          BACKGROUND ANIMADO (Apenas Dark Mode)
+         ========================================= */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-0 dark:opacity-100 transition-opacity duration-500">
         <motion.div
           animate={{ 
             scale: [1, 1.2, 1],
@@ -97,7 +105,9 @@ const Contact = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
-          {/* Coluna Esquerda: Informações e CTA */}
+          {/* =========================================
+              COLUNA ESQUERDA: Informações e CTA
+             ========================================= */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -106,22 +116,28 @@ const Contact = () => {
             className="space-y-8"
           >
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium mb-6 transition-colors
+                              /* Claro */ bg-brand-100 text-brand-700
+                              /* Escuro */ dark:bg-primary/10 dark:text-primary">
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-brand-400 dark:bg-primary"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-600 dark:bg-primary"></span>
                 </span>
                 Disponível para novos projetos
               </div>
               
-              <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
+              <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-6 transition-colors duration-300
+                             text-brand-900 dark:text-white">
                 Vamos construir algo <br/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r 
+                                 /* Claro */ from-brand-600 to-blue-400
+                                 /* Escuro */ dark:from-primary dark:to-purple-400">
                   extraordinário juntos?
                 </span>
               </h2>
               
-              <p className="text-lg text-muted-foreground leading-relaxed max-w-lg">
+              <p className="text-lg leading-relaxed max-w-lg transition-colors duration-300
+                            text-slate-600 dark:text-muted-foreground">
                 Tem uma ideia inovadora ou um desafio complexo na sua empresa? 
                 Nossa equipe está pronta para desenhar a solução tecnológica perfeita para o seu negócio.
               </p>
@@ -129,32 +145,40 @@ const Contact = () => {
 
             {/* Cards de Contato Rápido */}
             <div className="grid sm:grid-cols-2 gap-4">
-              <Card className="p-4 bg-card/50 border-muted hover:border-primary/50 transition-colors flex items-center gap-4">
-                <div className="p-3 rounded-full bg-primary/10 text-primary">
+              <Card className="p-4 flex items-center gap-4 transition-all duration-300
+                               /* Claro */ bg-white border-slate-200 shadow-sm hover:border-brand-300 hover:shadow-md
+                               /* Escuro */ dark:bg-card/50 dark:border-muted dark:hover:border-primary/50">
+                <div className="p-3 rounded-full transition-colors
+                                bg-brand-50 text-brand-600
+                                dark:bg-primary/10 dark:text-primary">
                   <MessageCircle size={24} />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Fale agora no</p>
-                  <p className="font-semibold">WhatsApp</p>
+                  <p className="text-sm text-slate-500 dark:text-muted-foreground">Fale agora no</p>
+                  <p className="font-semibold text-brand-900 dark:text-white">WhatsApp</p>
                 </div>
               </Card>
               
-              <Card className="p-4 bg-card/50 border-muted hover:border-primary/50 transition-colors flex items-center gap-4">
-                <div className="p-3 rounded-full bg-primary/10 text-primary">
+              <Card className="p-4 flex items-center gap-4 transition-all duration-300
+                               bg-white border-slate-200 shadow-sm hover:border-brand-300 hover:shadow-md
+                               dark:bg-card/50 dark:border-muted dark:hover:border-primary/50">
+                <div className="p-3 rounded-full transition-colors
+                                bg-brand-50 text-brand-600
+                                dark:bg-primary/10 dark:text-primary">
                   <MapPin size={24} />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Localização</p>
-                  <p className="font-semibold">Brasil - SC</p>
+                  <p className="text-sm text-slate-500 dark:text-muted-foreground">Localização</p>
+                  <p className="font-semibold text-brand-900 dark:text-white">Brasil - SC</p>
                 </div>
               </Card>
             </div>
 
             {/* Redes Sociais */}
             <div>
-              <p className="text-sm font-medium mb-4 text-muted-foreground">Siga nossas redes</p>
+              <p className="text-sm font-medium mb-4 text-slate-500 dark:text-muted-foreground">Siga nossas redes</p>
               <div className="flex gap-3">
-                {socialLinks.map((social, index) => (
+                {socialLinks.map((social) => (
                   <motion.a
                     key={social.name}
                     href={social.url}
@@ -162,7 +186,9 @@ const Contact = () => {
                     rel="noopener noreferrer"
                     whileHover={{ y: -3, scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
-                    className="p-3 rounded-xl bg-muted hover:bg-primary hover:text-white transition-colors duration-300"
+                    className="p-3 rounded-xl transition-colors duration-300
+                               /* Claro */ bg-white text-slate-600 border border-slate-200 hover:bg-brand-600 hover:text-white hover:border-brand-600
+                               /* Escuro */ dark:bg-muted dark:text-white dark:border-transparent dark:hover:bg-primary"
                   >
                     <social.icon size={20} />
                   </motion.a>
@@ -171,39 +197,46 @@ const Contact = () => {
             </div>
           </motion.div>
 
-          {/* Coluna Direita: Formulário */}
+          {/* =========================================
+              COLUNA DIREITA: Formulário
+             ========================================= */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <Card className="p-8 md:p-10 bg-card/80 backdrop-blur-xl border-primary/10 shadow-2xl shadow-primary/5 rounded-2xl relative overflow-hidden">
+            <Card className="p-8 md:p-10 relative overflow-hidden rounded-2xl transition-all duration-300
+                             /* Claro */ bg-white border-slate-200 shadow-xl shadow-slate-200/50
+                             /* Escuro */ dark:bg-card/80 dark:backdrop-blur-xl dark:border-primary/10 dark:shadow-primary/5">
+              
               {/* Borda gradient no topo */}
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-purple-500 to-primary" />
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-600 via-blue-400 to-brand-600 dark:from-primary dark:via-purple-500 dark:to-primary" />
               
               <div className="mb-8">
-                <h3 className="text-2xl font-bold mb-2">Envie uma mensagem</h3>
-                <p className="text-muted-foreground">
+                <h3 className="text-2xl font-bold mb-2 text-brand-900 dark:text-white">Envie uma mensagem</h3>
+                <p className="text-slate-600 dark:text-muted-foreground">
                   Preencha os dados abaixo para iniciar uma conversa direta no WhatsApp.
                 </p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-medium ml-1">Nome Completo</label>
+                  <label htmlFor="name" className="text-sm font-medium ml-1 text-slate-700 dark:text-slate-300">Nome Completo</label>
                   <Input 
                     id="name" 
                     name="name" 
                     value={formData.name} 
                     onChange={handleChange} 
                     placeholder="Como podemos te chamar?" 
-                    className="bg-background/50 border-muted-foreground/20 focus:border-primary h-12"
+                    className="h-12 transition-colors
+                               bg-slate-50 border-slate-200 focus:border-brand-500 text-slate-900 placeholder:text-slate-400
+                               dark:bg-background/50 dark:border-muted-foreground/20 dark:focus:border-primary dark:text-white dark:placeholder:text-muted-foreground"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="phone" className="text-sm font-medium ml-1">Telefone / WhatsApp</label>
+                  <label htmlFor="phone" className="text-sm font-medium ml-1 text-slate-700 dark:text-slate-300">Telefone / WhatsApp</label>
                   <Input 
                     id="phone" 
                     type="tel" 
@@ -211,26 +244,31 @@ const Contact = () => {
                     value={formData.phone} 
                     onChange={handleChange} 
                     placeholder="(DD) 99999-9999" 
-                    className="bg-background/50 border-muted-foreground/20 focus:border-primary h-12"
+                    className="h-12 transition-colors
+                               bg-slate-50 border-slate-200 focus:border-brand-500 text-slate-900 placeholder:text-slate-400
+                               dark:bg-background/50 dark:border-muted-foreground/20 dark:focus:border-primary dark:text-white dark:placeholder:text-muted-foreground"
                   />
                 </div>
                 
                 <div className="space-y-2">
-                  <label htmlFor="message" className="text-sm font-medium ml-1">Como podemos ajudar?</label>
+                  <label htmlFor="message" className="text-sm font-medium ml-1 text-slate-700 dark:text-slate-300">Como podemos ajudar?</label>
                   <Textarea 
                     id="message" 
                     name="message" 
                     value={formData.message} 
                     onChange={handleChange} 
                     placeholder="Conte um pouco sobre o seu projeto..." 
-                    className="bg-background/50 border-muted-foreground/20 focus:border-primary min-h-[120px] resize-none"
+                    className="min-h-[120px] resize-none transition-colors
+                               bg-slate-50 border-slate-200 focus:border-brand-500 text-slate-900 placeholder:text-slate-400
+                               dark:bg-background/50 dark:border-muted-foreground/20 dark:focus:border-primary dark:text-white dark:placeholder:text-muted-foreground"
                   />
                 </div>
 
                 <Button 
                   type="submit" 
                   size="lg"
-                  className="w-full h-14 text-base font-semibold bg-[#25D366] hover:bg-[#128C7E] text-white shadow-lg shadow-green-500/20 transition-all duration-300 group"
+                  className="w-full h-14 text-base font-semibold text-white shadow-lg transition-all duration-300 group
+                             bg-[#25D366] hover:bg-[#128C7E] shadow-green-500/20"
                   disabled={isSending}
                 >
                   {isSending ? (
@@ -249,7 +287,7 @@ const Contact = () => {
                   )}
                 </Button>
                 
-                <p className="text-xs text-center text-muted-foreground mt-4">
+                <p className="text-xs text-center mt-4 text-slate-500 dark:text-muted-foreground">
                   Ao clicar, você será redirecionado para o WhatsApp Web ou App.
                 </p>
               </form>

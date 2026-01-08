@@ -1,112 +1,142 @@
-// src/components/Hero.tsx
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import heroImage from "@/assets/hero-bg.jpg";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+// Certifique-se que a imagem ainda está nesta pasta
+import heroImage from "@/assets/hero-bg.jpg"; 
 
 const Hero = () => {
+  
+  // Função para rolar suavemente até a seção de projetos
+  const handleScrollToProjects = () => {
+    const projectsSection = document.getElementById("projects");
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <section
-      id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background text-foreground"
+    <section 
+      id="hero" 
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white dark:bg-black transition-colors duration-500"
     >
-      {/* Fundo com imagem + overlays sensíveis ao tema */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src={heroImage}
-          alt="Brasser Tech - Tecnologia"
-          className="w-full h-full object-cover opacity-40 dark:opacity-40"
+      
+      {/* =========================================
+          BACKGROUNDS (Camadas controladas por CSS)
+         ========================================= */}
+
+      {/* 1. MODO CLARO: Gradiente Suave Branco/Azul */}
+      <div className="absolute inset-0 bg-gradient-to-b from-brand-50 via-white to-white dark:opacity-0 transition-opacity duration-500 z-0" />
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-100/30 rounded-bl-[150px] blur-3xl opacity-50 dark:opacity-0 transition-opacity duration-500 z-0" />
+
+      {/* 2. MODO ESCURO: Imagem Tech + Overlay + Vinheta (Original) */}
+      <div className="absolute inset-0 opacity-0 dark:opacity-100 transition-opacity duration-500 z-0 pointer-events-none">
+        {/* A imagem de fundo */}
+        <img 
+          src={heroImage} 
+          alt="Brasser Tech Background" 
+          className="w-full h-full object-cover opacity-40" 
         />
-        {/* Gradiente que usa tokens (evita preto/branco fixos) */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/90" />
-        {/* Vinheta sutil: mais forte no dark, leve no light */}
-        <div className="absolute inset-0 pointer-events-none 
-                        [background:radial-gradient(60%_50%_at_50%_20%,transparent_0,transparent_55%,hsl(var(--background))_100%)]
-                        dark:[background:radial-gradient(60%_50%_at_50%_20%,transparent_0,transparent_55%,hsl(var(--background)/.8)_100%)]" />
+        {/* Gradiente Preto para facilitar leitura */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/90" />
+        {/* Vinheta radial para focar no centro */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,1)_100%)]" />
       </div>
 
-      {/* Conteúdo */}
-      <div className="relative z-10 flex flex-col items-center justify-center gap-8 text-center px-6 py-20 max-w-5xl mx-auto">
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
+      {/* =========================================
+          CONTEÚDO
+         ========================================= */}
+      <div className="container mx-auto px-6 relative z-10 flex flex-col items-center text-center pt-20">
+        
+        {/* BADGE / TAG SUPERIOR */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-5xl md:text-7xl font-extrabold leading-tight"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 text-sm font-medium shadow-sm transition-colors duration-300
+                     bg-white border border-blue-100 text-brand-700
+                     dark:bg-white/5 dark:border-white/10 dark:text-cyan-400"
         >
-          <span className="text-gradient">Automatize.</span>{" "}
-          <span className="text-gradient-secondary">Inove.</span>{" "}
-          <span className="text-gradient-accent">Expanda.</span>
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-blue-400 dark:bg-cyan-400"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600 dark:bg-cyan-500"></span>
+          </span>
+          Tecnologia para negócios que crescem
+        </motion.div>
+
+        {/* TÍTULO PRINCIPAL */}
+        <motion.h1 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ delay: 0.1 }}
+          className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-[1.1] transition-colors duration-300
+                     text-brand-900 dark:text-white"
+        >
+          Automatize. Inove. <br />
+          
+          {/* GRADIENTE DO TEXTO:
+              Claro: Azul -> Azul Claro
+              Escuro: Ciano -> Rosa (Original Brasser) 
+          */}
+          <span className="bg-clip-text text-transparent bg-gradient-to-r 
+                           from-brand-600 to-blue-400
+                           dark:from-[#00C2FF] dark:to-[#FF007A]">
+            Expanda seu Negócio.
+          </span>
         </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-lg md:text-2xl text-muted-foreground max-w-3xl"
+        {/* SUBTÍTULO */}
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ delay: 0.2 }}
+          className="text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed transition-colors duration-300
+                     text-slate-600 dark:text-gray-400"
         >
-          A tecnologia que transforma o seu negócio começa aqui.
+          Desenvolvemos software sob medida, aplicativos e automações que eliminam processos manuais e aumentam sua lucratividade.
         </motion.p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center mt-2"
+        {/* BOTÕES DE AÇÃO */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ delay: 0.3 }}
+          className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
         >
-          <a
-            href="https://wa.me/5549999206844?text=vim%20pelo%20site"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg">
-              Falar com um Especialista
+          {/* Botão Principal: WhatsApp */}
+          <a href="https://wa.me/5549999206844" target="_blank" className="w-full sm:w-auto">
+            <Button className="w-full h-14 px-8 text-lg rounded-full shadow-lg transition-all hover:-translate-y-1
+                               bg-brand-600 hover:bg-brand-700 text-white shadow-blue-200
+                               dark:bg-[#00C2FF] dark:hover:bg-[#009bc9] dark:text-black dark:shadow-cyan-500/20 dark:font-bold">
+              Falar com Especialista <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
           </a>
 
-          {/* <Button
-            size="lg"
-            variant="outline"
-            className="border-primary text-primary hover:bg-primary/10"
-            onClick={() => window.dispatchEvent(new CustomEvent("open-ai-chat"))}
+          {/* Botão Secundário: Scroll para Projetos */}
+          <Button 
+            variant="outline" 
+            onClick={handleScrollToProjects}
+            className="w-full sm:w-auto h-14 px-8 text-lg rounded-full border-2 bg-transparent transition-all
+                       border-slate-200 text-slate-600 hover:border-brand-600 hover:text-brand-600 hover:bg-white
+                       dark:border-white/20 dark:text-white dark:hover:bg-white/10 dark:hover:border-white"
           >
-            Fale com um Agente de IA
-          </Button> */}
+            Ver Portfólio
+          </Button>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 place-items-center"
+        {/* BADGES / ÍCONES ABAIXO */}
+        <motion.div 
+          initial={{ opacity: 0 }} 
+          animate={{ opacity: 1 }} 
+          transition={{ delay: 0.5 }}
+          className="mt-16 flex flex-wrap justify-center gap-8 text-sm font-medium transition-colors duration-300
+                     text-slate-500 dark:text-gray-500"
         >
-          {[
-            // { value: "500+", label: "Projetos Entregues" },
-            // { value: "98%", label: "Satisfação" },
-            // { value: "24/7", label: "Suporte" },
-            // { value: "15+", label: "Anos de Experiência" },
-          ].map((stat, i) => (
-            <div key={i} className="flex flex-col items-center">
-              <div className="text-4xl font-bold text-primary mb-1">{stat.value}</div>
-              <div className="text-sm text-muted-foreground">{stat.label}</div>
+          {["Suporte Ágil", "Tecnologia de Ponta", "Foco em Resultados"].map((item) => (
+            <div key={item} className="flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-brand-600 dark:text-[#00C2FF]" /> {item}
             </div>
           ))}
         </motion.div>
       </div>
-
-      {/* Indicador de rolagem */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-      >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="w-6 h-10 border-2 border-primary rounded-full flex items-start justify-center p-2"
-        >
-          <motion.div className="w-1.5 h-1.5 bg-primary rounded-full" />
-        </motion.div>
-      </motion.div>
     </section>
   );
 };
