@@ -62,14 +62,14 @@ const Hero = () => {
             </Button>
           </a>
 
-          <Button
+          {/* <Button
             size="lg"
             variant="outline"
             className="border-primary text-primary hover:bg-primary/10"
             onClick={() => window.dispatchEvent(new CustomEvent("open-ai-chat"))}
           >
             Fale com um Agente de IA
-          </Button>
+          </Button> */}
         </motion.div>
 
         <motion.div

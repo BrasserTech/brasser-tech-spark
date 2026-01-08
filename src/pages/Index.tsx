@@ -1,36 +1,72 @@
-// src/pages/Index.tsx - ATUALIZADO
-import React from 'react';
+import { useState } from "react";
+import Hero from "@/components/Hero";
+import Navbar from "@/components/Navbar";
+import Projects from "@/components/Projects";
+import Services from "@/components/Services";
+import Testimonials from "@/components/Testimonials";
+import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
+import Collaborator from "@/components/Collaborator";
+import PartnerSection from "@/components/PartnerSection";
 
-// Importe todas as seções do seu site a partir de /components/
-import Navbar from '@/components/Navbar';
-import Hero from '@/components/Hero';
-import Services from '@/components/Services';
-import Projects from '@/components/Projects';
-import Testimonials from '@/components/Testimonials';
-import Contact from '@/components/Contact';
-import Footer from '@/components/Footer';
+const Index = () => {
+  const [showPartner, setShowPartner] = useState(false);
 
-const IndexPage = () => {
+  // Ação: Ir para Parceiro
+  const handleShowPartner = () => {
+    window.scrollTo(0, 0);
+    setShowPartner(true);
+  };
+
+  // Ação: Voltar para Home
+  const handleBackToHome = () => {
+    setShowPartner(false);
+  };
+
+  // Ação: Navbar pede para ir para Home (e depois faz scroll)
+  const handleNavbarNavigation = () => {
+    setShowPartner(false);
+  };
+
   return (
-    <>
-      <Navbar />
+    <div className="min-h-screen bg-black text-white selection:bg-[#FF007A] selection:text-white">
       
-      {/* A MUDANÇA ESTÁ AQUI: 
-        Adicione um 'padding-top' (ex: pt-16) no <main> 
-        para "empurrar" o conteúdo para baixo do Navbar fixo.
-        Ajuste 'pt-16' (16 = 4rem = 64px) se a altura do seu Navbar for diferente.
-      */}
-      <main className="pt-16">
-        <Hero />
-        <Services />
-        <Projects />
-        {/* <Testimonials /> */}
-        <Contact />
-      </main>
-      
+      {/* ATUALIZADO: Passamos as duas funções para o Navbar */}
+      <Navbar 
+        onNavigate={handleNavbarNavigation} 
+        onOpenPartner={handleShowPartner} 
+      />
+
+      {showPartner ? (
+        // Seção Parceiro (Tela Cheia)
+        <PartnerSection onBack={handleBackToHome} />
+      ) : (
+        // Seção Home
+        <main>
+          <div id="hero">
+            <Hero />
+          </div>
+          <div id="services">
+            <Services />
+          </div>
+          <div id="projects">
+            <Projects />
+          </div>
+          {/* <div id="testimonials">
+            <Testimonials />
+          </div> */}
+          
+          <Collaborator onOpenPartner={handleShowPartner} />
+          
+          <div id="contact">
+            <Contact />
+          </div>
+        </main>
+      )}
+
       <Footer />
-    </>
+    </div>
   );
 };
 
-export default IndexPage;
+export default Index;
