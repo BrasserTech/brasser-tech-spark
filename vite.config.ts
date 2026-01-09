@@ -1,23 +1,24 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
-import path from 'path' // <-- 1. Importe o 'path'
+import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   
-  // Configurações para o GitHub Pages
-  base: '/brasser-tech-spark/', 
+  // CORREÇÃO 1: Base deve ser '/' para rodar no domínio principal
+  base: '/', 
+  
   build: {
-    outDir: 'docs',
+    // CORREÇÃO 2: Voltar para 'dist' para o Docker encontrar
+    outDir: 'dist',
+    emptyOutDir: true,
   },
 
-  // Configuração da porta (opcional)
   server: {
     port: 80
   },
   
-  // 2. Adicione esta secção para resolver os atalhos
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
