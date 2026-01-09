@@ -24,7 +24,7 @@ const Navbar = ({ onNavigate, onOpenPartner }: NavbarProps) => {
     { label: "Início", href: "#hero" },
     { label: "Serviços", href: "#services" },
     { label: "Projetos", href: "#projects" },
-    { label: "Depoimentos", href: "#testimonials" },
+    // { label: "Depoimentos", href: "#testimonials" },
     { label: "Seja um Parceiro", href: "#partner", isSpecial: true },
     { label: "Contato", href: "#contact" },
   ];
